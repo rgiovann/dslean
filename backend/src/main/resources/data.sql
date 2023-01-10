@@ -16,3 +16,8 @@ INSERT INTO tb_user_role (user_id, role_id) VALUES (3, 3);
 INSERT INTO tb_course (name, img_Uri, img_Gray_Uri) VALUES ('Bootcamp HTML','https://www.publicdomainpictures.net/pictures/270000/nahled/training-course-training-online.jpg','https://vle.btvi.edu.bs/moodle/pluginfile.php/101066/course/overviewfiles/HTML-00-CourseImage.jpg');
 INSERT INTO tb_offer (edition, start_Moment, end_Moment, course_id) VALUES ('1.0', TIMESTAMP WITH TIME ZONE '2022-09-14T03:00:00Z',TIMESTAMP WITH TIME ZONE '2023-09-14T03:00:00Z',1);
 INSERT INTO tb_offer (edition, start_Moment, end_Moment, course_id) VALUES ('2.0', TIMESTAMP WITH TIME ZONE '2022-12-14T03:00:00Z',TIMESTAMP WITH TIME ZONE '2023-12-14T03:00:00Z',1);
+
+
+INSERT INTO tb_resource (title, description,position,img_Uri,type,offer_id) VALUES ('Trilha HTML','Trilha Principal do curso',1,'https://openclipart.org/image/800px/69331',1,1);
+INSERT INTO tb_resource (title, description,position,img_Uri,type,offer_id) VALUES ('Fórum','Tire suas dúvidas',2,'https://openclipart.org/image/800px/69331',2,1);
+INSERT INTO tb_resource (title, description,position,img_Uri,type,offer_id) VALUES ('Lives','Lives exclusivas para a turma',3,'https://openclipart.org/image/800px/69331',0,1);

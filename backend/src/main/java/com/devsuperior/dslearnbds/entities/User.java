@@ -1,7 +1,9 @@
 package com.devsuperior.dslearnbds.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -31,7 +34,10 @@ public class User implements Serializable {
 	@JoinTable(name = "tb_user_role",
 			   joinColumns = @JoinColumn(name ="user_id"),
 			   inverseJoinColumns = @JoinColumn(name ="role_id"))  // JPA knows because the type of Set collection	
-	private Set<Role> roles = new HashSet<Role>();;
+	private Set<Role> roles = new HashSet<Role>();
+	
+	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+	private List<Notification> notifications = new ArrayList<Notification>();;
 
 	public User() {
  	}
@@ -83,6 +89,10 @@ public class User implements Serializable {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public List<Notification> getNotifications() {
+		return notifications;
 	}
 
 	@Override

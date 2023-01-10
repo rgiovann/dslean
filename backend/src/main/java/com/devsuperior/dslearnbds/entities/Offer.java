@@ -2,6 +2,8 @@ package com.devsuperior.dslearnbds.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -30,15 +33,18 @@ public class Offer implements Serializable{
 	// name rule: <entity name>_<property>
 	@JoinColumn(name = "course_id")
 	private Course course;
+	
+	@OneToMany(mappedBy = "offer")
+	private List<Resource> resources = new ArrayList<Resource>();
 
 	public Offer() {
 	}
 
-	public Offer(Long id, String edition, Instant startMomemt, Instant endMoment, Course course) {
+	public Offer(Long id, String edition, Instant startMoment, Instant endMoment, Course course) {
 		super();
 		this.id = id;
 		this.edition = edition;
-		this.startMoment = startMomemt;
+		this.startMoment = startMoment;
 		this.endMoment = endMoment;
 		this.course = course;
 	}
@@ -59,11 +65,11 @@ public class Offer implements Serializable{
 		this.edition = edition;
 	}
 
-	public Instant getStartMomemt() {
+	public Instant getStartMoment() {
 		return startMoment;
 	}
 
-	public void setStartMomemt(Instant startMomemt) {
+	public void setStartMoment(Instant startMomemt) {
 		this.startMoment = startMomemt;
 	}
 
@@ -83,6 +89,10 @@ public class Offer implements Serializable{
 		this.course = course;
 	}
 
+	public List<Resource> getResources() {
+		return resources;
+	}	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
