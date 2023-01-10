@@ -1,11 +1,14 @@
 package com.devsuperior.dslearnbds.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +24,23 @@ public class Course implements Serializable{
 	private String name;
 	private String imgUri;
 	private String imgGrayUri;
+	
+	// === one Course line id to many Offers === 
+	// If the relationship is bidirectional, 
+	// the  mappedBy element must be used to specify the relationship 
+	// field or property of the entity that is the owner of the relationship. 
+	// Course 1 |--------------| * Offers
+	// But commonly the target foreign key (course_id) is mapped in the target entity (Offer) - it is a 
+	// ManyToOne after all - and so the mappedby is used to specify that this 
+	// OneToMany should use the relationship already defined in the target entity (Offer).
+	// In this case, "mappedBy=course" tells it to look at the "course" property
+	// mapping within the "Offer" entity. There, it finds "course" has a ManyToMany 
+	// mapping with a default joinColumn "course_id" that it also uses for the OneToMany. 
+	// Because it is already mapped within the Offer entity, the OneToMany is read-only. 
+	// This ensures that should the two relationships be out of sync, JPA has one side
+	// to always trust and use to set the database field.
+	@OneToMany(mappedBy = "course")
+	private List<Offer> offers = new ArrayList<Offer>();
 
 	public Course() {
 	}
@@ -63,6 +83,11 @@ public class Course implements Serializable{
 
 	public void setImgGrayUri(String imgGrayUri) {
 		this.imgGrayUri = imgGrayUri;
+	}
+	
+	
+	public List<Offer> getOffers() {
+		return offers;
 	}
 
 	@Override

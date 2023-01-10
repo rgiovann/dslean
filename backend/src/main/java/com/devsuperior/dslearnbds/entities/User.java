@@ -1,6 +1,7 @@
 package com.devsuperior.dslearnbds.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -27,12 +28,10 @@ public class User implements Serializable {
 	private String password;
 	
 	@ManyToMany(fetch = FetchType.EAGER)  // só usamos quando temos poucos resultados
-	//@ManyToMany
 	@JoinTable(name = "tb_user_role",
 			   joinColumns = @JoinColumn(name ="user_id"),
 			   inverseJoinColumns = @JoinColumn(name ="role_id"))  // JPA knows because the type of Set collection	
-	
-	private Set<Role> roles;
+	private Set<Role> roles = new HashSet<Role>();;
 
 	public User() {
  	}
