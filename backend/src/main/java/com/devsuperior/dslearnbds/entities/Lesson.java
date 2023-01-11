@@ -1,7 +1,9 @@
 package com.devsuperior.dslearnbds.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -15,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 // an abstract superclass CANNOT BE INSTATIATED (HERANCA TOTAL)
@@ -31,17 +34,23 @@ public abstract class Lesson implements Serializable {
 	private String title;
 	private Integer position;
 
-	@ManyToOne
+	
 	// Specifies a column for joining an entity association or element collection
 	// name rule: <entity name>_<property>
+	@ManyToOne
 	@JoinColumn(name = "section_id")
 	private Section section;
 
 	@ManyToMany(fetch = FetchType.LAZY) //
 	@JoinTable(name = "tb_lessons_done", joinColumns = @JoinColumn(name = "lesson_id"), inverseJoinColumns = {
 			@JoinColumn(name = "user_id"), @JoinColumn(name = "offer_id") }) // JPA knows because the type of Set  collection
-
 	private Set<Enrollment> enrollmentsDone = new HashSet<Enrollment>();
+	
+	@OneToMany(mappedBy = "lesson")
+	private Set<Deliver> deliveries = new HashSet<Deliver>();
+	
+	@OneToMany(mappedBy = "lesson")
+	private List<Topic> topics = new ArrayList<Topic>();
 
 	public Lesson() {
 	}
