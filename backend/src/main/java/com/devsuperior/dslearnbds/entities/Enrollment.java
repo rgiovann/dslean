@@ -1,5 +1,6 @@
 package com.devsuperior.dslearnbds.entities;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 import javax.persistence.Column;
@@ -11,9 +12,11 @@ import com.devsuperior.dslearnbds.entities.pk.EnrollmentPK;
 
 @Entity
 @Table(name = "tb_enrollment")
-public class Enrollment {
+public class Enrollment implements Serializable  {
 	
-	
+ 
+	private static final long serialVersionUID = 1L;
+
 	// Applied to a persistent field or property of an entity class or mapped superclass 
 	// to denote a composite primary key that is an embeddable class. The embeddable class 
 	// must be annotated as Embeddable. 
