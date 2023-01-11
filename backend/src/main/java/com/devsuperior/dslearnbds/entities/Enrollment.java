@@ -18,7 +18,6 @@ import com.devsuperior.dslearnbds.entities.pk.EnrollmentPK;
 @Table(name = "tb_enrollment")
 public class Enrollment implements Serializable  {
 	
- 
 	private static final long serialVersionUID = 1L;
 
 	// Applied to a persistent field or property of an entity class or mapped superclass 
@@ -43,7 +42,6 @@ public class Enrollment implements Serializable  {
 	
 	public Enrollment() {
 	}
-
 
 	public Enrollment(User user, Offer offer, Instant enrollMoment, Instant refundMoment, boolean available, boolean onlyUpdate) {
 		super();
@@ -105,7 +103,6 @@ public class Enrollment implements Serializable  {
 		this.available = available;
 	}
 
-
 	public boolean isOnlyUpdate() {
 		return onlyUpdate;
 	}
@@ -115,6 +112,37 @@ public class Enrollment implements Serializable  {
 		this.onlyUpdate = onlyUpdate;
 	}
 	
+	public Set<Lesson> getLessonsDone() {
+		return lessonsDone;
+	}
+
+	public Set<Deliver> getDeliveries() {
+		return deliveries;
+	}	
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Enrollment other = (Enrollment) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}	
 
 }
