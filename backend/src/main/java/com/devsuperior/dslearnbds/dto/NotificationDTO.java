@@ -1,48 +1,31 @@
-package com.devsuperior.dslearnbds.entities;
+package com.devsuperior.dslearnbds.dto;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-@Entity
-@Table(name = "tb_notification")
-public class Notification implements Serializable {
+import com.devsuperior.dslearnbds.entities.Notification;
 
- 
+public class NotificationDTO implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+ 
 	private Long id;
 	private String text;
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant moment;
 	private Boolean read;
 	private String route;
-
-	@ManyToOne
-	//Specifies a column for joining an entity association or element collection
-	// name rule: <entity name>_<property>
-	@JoinColumn(name = "user_id")
-	private User user;
+	private Long userId;
 	
-	public Notification() {
+	public NotificationDTO() {
 	}
 
-	public Notification(Long id, String text, Instant moment, Boolean read, String route) {
-		super();
+	public NotificationDTO(Long id, String text, Instant moment, Boolean read, String route, Long userId) {
 		this.id = id;
 		this.text = text;
 		this.moment = moment;
 		this.read = read;
 		this.route = route;
+		this.userId = userId;
 	}
 
 	public Long getId() {
@@ -85,12 +68,16 @@ public class Notification implements Serializable {
 		this.route = route;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getIdFromUser(Notification entity) {
+		return entity.getUser().getId();
 	}
 
 	@Override
@@ -109,7 +96,7 @@ public class Notification implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Notification other = (Notification) obj;
+		NotificationDTO other = (NotificationDTO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -117,8 +104,8 @@ public class Notification implements Serializable {
 			return false;
 		return true;
 	}
+	
+	
+ 	
 
-	
-	
-	
 }

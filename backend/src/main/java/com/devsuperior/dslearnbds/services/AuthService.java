@@ -1,4 +1,5 @@
 package com.devsuperior.dslearnbds.services;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,18 +18,15 @@ public class AuthService {
 	private UserRepository userRepository;
 
 	@Transactional( readOnly = true)
-	public User authenticaded() {
+	public User authenticated() {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		try {
-		return userRepository.findByEmail(username);
-	}
-		catch (Exception e) {
-			throw new UnauthorizedException("Invalid user: " + username );
-		}
+		User user = userRepository.findByEmail(username);
+		Optional<User> opt = Optional.ofNullable(user);
+		return opt.orElseThrow(() -> new UnauthorizedException("Invalid user: " + username ));
 	}
 	
 	public void validateSelfOrAdmin(Long userId) {
-		User  user = authenticaded();
+		User  user = authenticated();
 		if( !user.getId().equals(userId) && !user.hasRole("ROLE_ADMIN")   ) {
 			throw new ForbiddenException("Access denied.");
 		}

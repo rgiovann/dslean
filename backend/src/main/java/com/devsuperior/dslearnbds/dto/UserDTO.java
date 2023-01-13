@@ -13,7 +13,6 @@ public class UserDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private long id;
 	@NotBlank(message = "First name can´t be empty.")
-	
 	private String name;
 	@Email( message = "Invalid email format.")	
 	private String email;
@@ -42,7 +41,7 @@ public class UserDTO implements Serializable{
 		return this.name;
 	}
 
-	public void setFirstName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
