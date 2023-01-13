@@ -97,6 +97,15 @@ public class User implements UserDetails, Serializable {
 	public List<Notification> getNotifications() {
 		return notifications;
 	}
+	
+	public boolean hasRole(String roleName) {
+		for( Role role : this.roles) {
+			if(role.getAuthority().equals(roleName)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public int hashCode() {

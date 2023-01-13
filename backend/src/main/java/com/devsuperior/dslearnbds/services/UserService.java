@@ -30,6 +30,9 @@ public class UserService implements UserDetailsService{
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private AuthService authService;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -45,6 +48,10 @@ public class UserService implements UserDetailsService{
 	
 	@Transactional(readOnly = true)
 	public UserDTO findById(Long id) {
+		
+		// user is not Admin or is not the logged user then Forbidden exception
+		authService.validateSelfOrAdmin(id);
+		
 		Optional<User> obj = userRepository.findById(id);
 		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Error. Id not found: " + id));
 		return EntityToDTO(entity);
