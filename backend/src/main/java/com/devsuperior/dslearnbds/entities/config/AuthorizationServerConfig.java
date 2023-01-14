@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -34,6 +35,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 // ****	
 // not needed anymore, used to debug internal InternalAuthorizationServiceException (missing @Autowired)
@@ -64,12 +68,31 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		.withClient(clientId)
 		.secret(passwordEncoder.encode(clientSecret))
 		.scopes("read", "write")
-		.authorizedGrantTypes("password")
-		.accessTokenValiditySeconds(jwtDuration);
+		.authorizedGrantTypes("password","refresh_token")
+		.accessTokenValiditySeconds(jwtDuration)
+		.refreshTokenValiditySeconds(jwtDuration);
 	}
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+
+/*                                === I*M*P*O*R*T*A*N*T  ===
+ * Providing friendly error messages in production applications when it comes to authentication/authorization 
+ * is in general bad practice from a security standpoint. These types of messages can benefit malicious actors, 
+ * when trying out things so that they realize what they have done wrong and guide them in their hacking attempts.
+ */
+		
+// Integrate our CustomOauthException in the OAuth2config
+//		endpoints.exceptionTranslator(exception -> {
+//            if (exception instanceof OAuth2Exception) {
+//                OAuth2Exception oAuth2Exception = (OAuth2Exception) exception;
+//                return ResponseEntity
+//                        .status(oAuth2Exception.getHttpErrorCode())
+//                        .body(new CustomOauthException(oAuth2Exception.getMessage()));
+//            } else {
+//                throw exception;
+//            }
+//        });
 		
 		TokenEnhancerChain chain = new TokenEnhancerChain();
 		chain.setTokenEnhancers(Arrays.asList(accessTokenConverter, tokenEnhancer));
@@ -79,7 +102,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		endpoints.authenticationManager(authenticationManager)
 		.tokenStore(tokenStore)
 		.accessTokenConverter(accessTokenConverter)
-		.tokenEnhancer(chain);
+		.tokenEnhancer(chain)
+		.userDetailsService(userDetailsService);
+		
+
 
 		// ****	
 		// not needed anymore, used to debug internal InternalAuthorizationServiceException (missing @Autowired)

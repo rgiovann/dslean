@@ -8,14 +8,15 @@ import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.devsuperior.dslearnbds.services.exceptions.DatabaseException;
 import com.devsuperior.dslearnbds.services.exceptions.ForbiddenException;
-import com.devsuperior.dslearnbds.services.exceptions.NestedResourceNotFoundException;
 import com.devsuperior.dslearnbds.services.exceptions.ResourceNotFoundException;
 import com.devsuperior.dslearnbds.services.exceptions.UnauthorizedException;
 
@@ -35,10 +36,10 @@ public class ResourceExceptionHandler {
 		
 	}
 	
-	
-	@ExceptionHandler(NestedResourceNotFoundException.class)
-	public ResponseEntity<StandardError> entityNotFound(NestedResourceNotFoundException e, HttpServletRequest request){
-		HttpStatus status = HttpStatus.NOT_FOUND;
+    @ExceptionHandler({ AuthenticationException.class })
+    @ResponseBody
+    public ResponseEntity<StandardError> handleAuthenticationException(AuthenticationException e,HttpServletRequest request) {
+    	HttpStatus status = HttpStatus.UNAUTHORIZED;
 		StandardError err = new StandardError();
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
@@ -46,9 +47,9 @@ public class ResourceExceptionHandler {
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
-		
-	}
-		
+    }
+	
+	
 	@ExceptionHandler(ForbiddenException.class)
 	public ResponseEntity<OAuthCustomError> forbidden(ForbiddenException e, HttpServletRequest request){
 		OAuthCustomError err = new OAuthCustomError("Forbidden",e.getMessage());
