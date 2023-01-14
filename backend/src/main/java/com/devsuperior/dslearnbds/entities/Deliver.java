@@ -19,6 +19,7 @@ import com.devsuperior.dslearnbds.entities.enums.DeliverStatus;
 @Table(name = "tb_deliver")
 public class Deliver implements Serializable{
 	
+
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -128,6 +129,12 @@ public class Deliver implements Serializable{
 		return true;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Deliver [id=" + id + ", uri=" + uri + ", moment=" + moment + ", status=" + status + ", feedback="
+				+ feedback + ", correctCount=" + correctCount + ", enrollment=" + enrollment + ", lesson=" + lesson
+				+ "]";
+	}
+
 	
 }
