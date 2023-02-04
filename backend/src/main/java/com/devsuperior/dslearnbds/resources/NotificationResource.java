@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devsuperior.dslearnbds.dto.NotificationDTO;
@@ -19,10 +20,13 @@ public class NotificationResource {
 	private NotificationService notificationService;
 
 	@GetMapping
-	public ResponseEntity<Page<NotificationDTO>> notificationsForCurrentUser(Pageable pageable) {
+	public ResponseEntity<Page<NotificationDTO>> notificationsForCurrentUser(
+			@RequestParam(name="unreadOnly", defaultValue="false") Boolean unreadOnly, 
+			Pageable pageable) {
+		
 	     // http request direction is String, Direction is an enumeration type (so the need of valueOf)
  		
-		Page<NotificationDTO> page = notificationService.notificationsForCurrentUser(pageable);
+		Page<NotificationDTO> page = notificationService.notificationsForCurrentUser(unreadOnly,pageable);
 		return ResponseEntity.ok().body(page);
 
 	}

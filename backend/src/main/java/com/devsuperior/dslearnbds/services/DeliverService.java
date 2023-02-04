@@ -1,5 +1,6 @@
 package com.devsuperior.dslearnbds.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -15,14 +16,17 @@ public class DeliverService {
 	@Autowired
 	private DeliverRepository deliverRepository;
 	
+    @Autowired
+    private ModelMapper modelMapper;
+    
+	
 	@PreAuthorize("hasAnyRole('ADMIN','INSTRUCTOR')")
 	@Transactional
 	public void saveRevision(Long id, DeliverRevisionDto dto) {
 	
 		Deliver deliver = deliverRepository.getOne(id);
 				
-	    // now submit the information from dto
-		deliver = dto.DtoToEntity(dto, deliver);
+		modelMapper.map(dto, deliver);
  
 		deliverRepository.save(deliver);
 	}

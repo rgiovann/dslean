@@ -27,9 +27,9 @@ public class NotificationService {
     private ModelMapper modelMapper;
 	
     @Transactional(readOnly = true)
-	public Page<NotificationDTO> notificationsForCurrentUser(Pageable pageable){
+	public Page<NotificationDTO> notificationsForCurrentUser(boolean unreadOnly, Pageable pageable){
 		User user = authService.authenticated();
-		Page<Notification> page = notificationRepository.findByUser(user, pageable);
+		Page<Notification> page = notificationRepository.find(user,unreadOnly, pageable);
 		return page.map(p -> entityToDto(p));
 		
  	}

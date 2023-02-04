@@ -45,13 +45,5 @@ public class DeliverRevisionDto implements Serializable {
 		this.correctCount = correctCount;
 	}
 	
-	public Deliver DtoToEntity(DeliverRevisionDto dto, Deliver deliver)
-	{
-		deliver.setStatus(dto.getStatus());
-		deliver.setCorrectCount(dto.getCorrectCount());
-		deliver.setFeedback(dto.getFeedback());
-		return deliver;
-	}
-	
 
 }
